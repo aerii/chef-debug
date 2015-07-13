@@ -5,7 +5,7 @@ Chef Zero Debug
 
 Description
 -----------
-The Chef Zero shell can be used for debugging Chef code.
+The Chef Zero shell can be used for debugging Chef code. This cookbook automatically provides the initial configurations necessary to get the shell running on temporary Linux-based and Windows-based virtual machines used in reproducible/repeatable environments for virtual boxes, such as VirtualBox.
 
 Installation
 ------------
@@ -46,61 +46,23 @@ You may currently pass the following options to the initializer:
 - `attributes_mode` - run in attributes mode (chef:attributes >)
 - `recipe_mode` - run in recipe mode (chef:recipe >)
 
-Installed Configuration Files
------------------------------
+Configuration Files
+-------------------
 - `knife.rb` - Used to specify the chef-repo-specific configuration details for knife (can be modified) 
 - `client.rb` - Used to specify the configuration details for the chef-client (can be modified)
 - `debug.sh` - In Linux, the bash file to initiate the debugging shell (can be modified)
 - `stop_debug.sh` - In Linux, the bash file to terminate the running debugging shell (can be modified)
 - `debug.ps1` - In Windows, the powershell file to initiate the debugging shell (can be modified)
-- `stop_debug.ps1` - In Windows, the powershell file to terminate the running debugging shell (can be modified)
+- `stop_debug.ps1` - In Windows, the optional powershell file to terminate the debugging shell (can be modified; commented out)
 
 ### Relevant Recipes
 - `debug.rb` - Used to determine the platform
 - `debug_rhel.rb` - Used to run debugging for Linux-based platforms
 - `debug_windows.rb` - Used to run debugging for Windows-based platforms
 
-Node Settings
--------------
-```text
-To turn on or off debugging (default is false):
-  - node["chef_debug"]["debug"]["enabled"] = true/false
-
-Default settings for nodes:
-  - default["chef_debug"]["debug"]["service_name"] = 'chef-zero'
-  - default["chef_debug"]["debug"]["log_level"] = ':info'
-  - default["chef_debug"]["debug"]["log_location"] = 'STDOUT'
-  - default["chef_debug"]["debug"]["node_name"] = 'admin'
-  - default["chef_debug"]["debug"]["validation_client_name"] = 'chef-validator'
-  - default["chef_debug"]["debug"]["chef_server_url"] = 'http://127.0.0.1:8889'
-
-  Windows default:
-  - default["chef_debug"]["debug"]["client_key"] = 'C:/Users/vagrant/AppData/Local/Temp/kitchen/client.pem'
-  - default["chef_debug"]["debug"]["validation_key"] = 'C:/Users/vagrant/AppData/Local/Temp/kitchen/validation.pem'
-  
-  Linux default:
-  - default["chef_debug"]["debug"]["client_key"] = '/tmp/kitchen/client.pem'
-  - default["chef_debug"]["debug"]["validation_key"] = '/tmp/kitchen/validation.pem'
-```
-
-CLI (Command Line)
-------------------
-Common commands to check the local development environment:
-
-      $ knife user list
-      $ knife environment list
-
-Additional Commands
+Step-by-step Commands
 -------------------
 Common commands to inspect the chef-zero shell environment:
-```ruby
-  help(:command)
-  nodes.all
-  nodes.list
-  node['fqdn']
-  environments.all
-```
-Common commands to step inside the code:
 ```ruby
   (1) run_chef
   (2) chef_run
@@ -108,6 +70,14 @@ Common commands to step inside the code:
   (4) chef_run.rewind
   (5) chef_run.resume
 ```
+
+CLI (Command Line)
+------------------
+Common knife commands to check the local development environment:
+
+      $ knife help
+      $ knife user list
+      $ knife environment list
 
 ### Help
 Run `help` inside the shell to see a list of the supported commands:

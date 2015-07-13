@@ -5,7 +5,7 @@ Chef Zero Debug
 
 Description
 -----------
-The Chef Zero shell can be used for debugging Chef code. This cookbook automatically provides the initial configurations necessary to get the shell running on temporary Linux-based and Windows-based virtual machines used in reproducible/repeatable environments for virtual boxes, such as VirtualBox.
+The Chef Zero shell can be used for debugging Chef code. This cookbook automatically provides the initial configurations necessary to get the shell running on temporary Linux-based and Windows-based virtual machines used in reproducible/repeatable environments for virtual boxes, such as VirtualBox. The Wiki contains more detailed information about settings and configurations.
 
 Installation
 ------------

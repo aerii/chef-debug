@@ -4,44 +4,48 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
-include_recipe "chef_debug::debug_#{node["platform_family"]}"
+include_recipe "chef_debug::debug_#{node['platform_family']}"
 
-# !Code below for debug testing!
-
-# Testing nodes
-node.default["food"]["topping"] = "Ketchup"
-node.default["color"] = "Yellow"
-node.default["animal"] = "Bird"
-node.default["city"] = "San Francisco"
-node.default["state"] = "California"
-
-# $$ run_chef
-# $$ chef_run
+# ! Code below for debug testing !
 
 breakpoint "before breakpoint" do
   action :break
 end
 
-# $$ chef_run.step
-if node["platform_family"] == "windows" then
+# Testing nodes
+node.default["food"] = "Burger"
+node.default["animal"] = "Bird"
+node.default["weather"] = "Sunny"
+
+breakpoint "middle breakpoint" do
+  action :break
+end
+
+node.default["city"] = "San Francisco"
+node.default["state"] = "California"
+node.default["weather"] = "Rain"
+node.default["country"] = "USA"
+
+# chef_run.step
+if node['platform_family'] == 'windows' then
   powershell_script "print current directory" do
     code <<-EOH
     $pwd
     EOH
     action :run
   end
-elsif node["platform_family"] == "rhel" then
+elsif node['platform_family'] == 'rhel' then
   bash "state current directory" do
-    code "pwd"
+    code <<-EOH
+    pwd
+    echo "The weather in node['city'], node['state'], node['country'] is node['weather']."
+    EOH
     action :run
   end
 end 
-
-# $$ chef_run.rewind
-# $$ chef_run.resume
 
 breakpoint "after breakpoint" do
   action :break
 end
 
-Chef::Log.warn(node["state"])
+Chef::Log.warn(node["weather"])

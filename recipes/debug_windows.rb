@@ -30,11 +30,11 @@ if node["chef_debug"]["debug"]["enabled"] == true then
       source "/windows/debug.ps1.erb"
     end
 
-    Windows
-    template "C:/opscode/chef/bin/stop_debug.ps1" do
-      mode "0644"
-      source "/windows/stop_debug.ps1.erb"
-    end
+    # Windows
+    # template "C:/opscode/chef/bin/stop_debug.ps1" do
+    #   mode "0644"
+    #   source "/windows/stop_debug.ps1.erb"
+    # end
 
 end
 

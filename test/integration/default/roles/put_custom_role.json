@@ -1,0 +1,11 @@
+{
+  "name": "localdev_role",
+  "description": "localdev_role role",
+  "json_class": "Chef::Role",
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[localdev::default]"
+  ]
+}

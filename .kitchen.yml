@@ -1,0 +1,47 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+  chef_omnibus_url: https://www.chef.io/chef/install.sh
+  roles_path: "test/integration/default/roles"
+  environments_path: "test/integration/default/environments"
+  data_bags_path: "test/integration/default/data_bags"
+  client_rb:
+      environment: chef_debug_env
+
+platforms:
+  - name: centos-66
+    driver:
+      box: 'centos-66'
+      box_url: https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.0.0/centos-6.6-x86_64.box
+  # Windows
+  # - name: windows
+  #   driver:
+  #     communicator: winrm
+  #     guest: windows
+  #     username: vagrant
+  #     password: vagrant
+  #     box: 'opentable/win-2012r2-standard-amd64-nocm'
+
+suites:
+  - name: default
+    run_list:
+      - recipe[chef_debug::default]
+    attributes:
+      chef-zero:
+        install: true
+        start: true
+    excludes:
+      windows
+  # Windows
+  # - name: windows
+  #   run_list:
+  #     - recipe[chef_debug::default]
+  #   attributes:
+  #     chef-zero:
+  #       install: true
+  #       start: true
+  #   excludes:
+  #     centos-66

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+SERVICE="chef-zero"
+ONE="sudo /opt/chef/embedded/bin/chef-zero -d"
+TWO="sudo knife cookbook upload -a -c /tmp/kitchen/client.rb"
+THREE="sudo knife environment from file /tmp/kitchen/environments/chef_debug_env.json"
+FOUR="sudo chef-shell -z -c /tmp/kitchen/client.rb -o 'chef_debug::default'"
+
+if ps aux | grep -v grep | grep $SERVICE > /dev/null; then
+  echo "`date`: $SERVICE running, starting shell..."
+  "cd"
+  eval $FOUR
+else
+  echo "`date`: $SERVICE configuring, starting shell..."
+  "cd"
+  eval $ONE
+  eval $TWO
+  eval $THREE
+  eval $FOUR
+fi

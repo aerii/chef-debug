@@ -1,0 +1,10 @@
+# Windows
+
+$SERVICE = "chef-zero"
+
+echo "$SERVICE process running, starting shell..."
+. cd C:\opscode\chef\embedded\bin
+. Start-Process chef-zero -Verb runas -WindowStyle Hidden -Wait
+. knife cookbook upload -a -c C:\Users\vagrant\AppData\Local\Temp\kitchen\client.rb
+. knife environment from file C:\Users\vagrant\AppData\Local\Temp\kitchen\environments\chef_debug_env.json
+. chef-shell -z -c C:\Users\vagrant\AppData\Local\Temp\kitchen\client.rb -o 'chef_debug::default'

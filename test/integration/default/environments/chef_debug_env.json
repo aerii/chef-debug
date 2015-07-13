@@ -1,0 +1,15 @@
+{
+  "name": "chef_debug_env",
+  "description": "The chef_debug environment",
+  "cookbook_versions": {
+  },
+  "json_class": "Chef::Environment",
+  "chef_type": "environment",
+  "default_attributes": {
+  },
+  "override_attributes": {
+    "push_jobs": {
+      "reload_config": true
+    }
+  }
+}

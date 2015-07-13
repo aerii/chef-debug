@@ -1,0 +1,12 @@
+#!/bin/bash
+
+SERVICE="chef-zero"
+
+if ps aux | grep -v grep | grep $SERVICE > /dev/null; then
+  echo "`date`: $SERVICE ceasing..."
+  "cd"
+  ONE="sudo pkill chef"
+  eval $ONE
+else
+  echo "`date`: $SERVICE is not running"
+fi

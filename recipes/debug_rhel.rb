@@ -45,33 +45,3 @@ if node["chef_debug"]["debug"]["enabled"] == true then
     end
 
 end
-
-if node["chef_debug"]["debug"]["enabled"] == false then
-
-    directory "/root/.chef" do
-      action :create
-      recursive true
-    end
-
-    template "/root/.chef/knife.rb" do
-      source "knife.rb.erb"
-      mode "0644"
-      user "root"
-      group "root"
-      variables({
-        :log_level => node["chef_debug"]["debug"]["log_level"],
-        :log_location => node["chef_debug"]["debug"]["log_location"],
-        :node_name => node["chef_debug"]["debug"]["node_name"],
-        :client_key => node["chef_debug"]["debug"]["client_key"],
-        :validation_client_name => node["chef_debug"]["debug"]["validation_client_name"],
-        :validation_key => node["chef_debug"]["debug"]["validation_key"],
-        :chef_server_url => node["chef_debug"]["debug"]["chef_server_url"]
-      })
-    end
-
-    execute "stopping_chef" do
-      command "sudo pkill chef"
-      action :run
-    end
-
-end

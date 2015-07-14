@@ -7,6 +7,50 @@ Description
 -----------
 The Chef Zero shell can be used for debugging Chef code. This cookbook automatically provides the initial configurations necessary to get the shell running on temporary Linux-based and Windows-based virtual machines used in reproducible/repeatable environments for virtual boxes, such as VirtualBox. The Wiki contains more detailed information about settings and configurations.
 
+The shell offers close inspection of the code, by loading specific recipes in the run list. The default recipe is `recipe[chef_debug::default]`. The breakpoint resource can be used to break in the recipe at specific locations. The syntax for a breakpoint resource is:
+
+```ruby
+breakpoint 'name' do
+  action :break
+end
+```
+
+Problem Scenario
+----------------
+Solving a logical error on a Linux CentOS platform by stepping through the code line-by-line.
+The node["weather"] says that it is "Rain" when it should be "Sunny".
+
+Solving step-by-step
+--------------------
+1. Enter vagrant through kitchen: `kitchen login` <br>
+1. Change to root: `sudo su -` <br>
+1. Initialize the debugging shell: `debug.sh` <br>
+1. Inspect the platform: `node["fqdn"]` <br>
+   The output shows that it is CentOS **=> "default-centos-66"**. <br>
+1. Inspect the weather node: `node["weather"]` <br>
+   The output shows that it is **=> "Rain"**. <br>
+1. Initiate the chef-client: `run_chef` <br>
+   The program is run until the first breakpoint, at chef_debug::debug line 11. <br>
+1. To step through the code: `chef_run.step` <br>
+   The program steps to the next breakpoint, at chef_debug::debug line 20. <br>
+   The output is **=> 6** because it skipped six lines. <br>
+1. To resume the code: `chef_run.resume` <br>
+   The output shows that the node["weather"] was set twice. <br>
+   On line 18 it was set to "Sunny" but the value was overwritten on line 26 to "Rain". <br>
+1. Comment out line 26 in chef_debug::debug.rb using: `#`
+1. To exit the debugging shell: `exit`
+1. Before exiting vagrant, check if chef-zero is still running: `ps aux | grep chef-zero` <br>
+   The first line in the output shows that chef-zero is still running: <br>
+   **root      7025  ?        Sl   01:29   0:00 /opt/chef/embedded/bin/ruby /opt/chef/embedded/bin/chef-zero -d<br>**
+   **root      7283  pts/0    S+   01:36   0:00 grep chef-zero**
+1. To stop chef-zero: `stop_debug.sh` <br>
+   This is necessary in order to re-converge kitchen for Linux platforms.
+1. Running the command again, shows that chef-zero daemon has stopped: `ps aux | grep chef-zero` <br>
+   **root   7294  pts/0    S+   01:39   0:00 grep chef-zero**
+1. To exit root/vagrant: `exit` <br>
+1. Re-converge kitchen to update changes: `kitchen converge` <br>
+1. Repeat and then node["weather"] should now be => "Sunny". <br>
+
 Installation
 ------------
 The Chef Zero shell is called as part of the debug.rb recipe, that calls debug_rhel.rb and debug_windows.rb respectively based on the platform.
